@@ -1,7 +1,5 @@
 package com.example.buensaborback.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +19,10 @@ public class Empresa extends Base{
     private String razonSocial;
     private Integer cuil;
 
-    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "empresa_id")
     @Builder.Default
     private Set<Sucursal> sucursales = new HashSet<>();
+
 }

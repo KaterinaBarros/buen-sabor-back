@@ -1,13 +1,11 @@
 package com.example.buensaborback.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -23,7 +21,7 @@ public class Sucursal extends Base{
     private LocalTime horarioApertura;
     private LocalTime horarioCierre;
 
-    @OneToOne(mappedBy = "sucursal")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Domicilio domicilio;
     
     @ManyToMany
@@ -34,12 +32,13 @@ public class Sucursal extends Base{
     private Set<Categoria> categorias = new HashSet<>();
 
 
-    @OneToMany
-    @JoinColumn(name = "sucursal_id")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "promocion_sucursal",
+            joinColumns = @JoinColumn(name = "sucursal_id"),
+            inverseJoinColumns = @JoinColumn(name = "promocion_id"))
     @Builder.Default
     private Set<Promocion> promociones = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "empresa_id")
-    private Empresa empresa;
+    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Pedido> pedidos = new HashSet<>();
 }

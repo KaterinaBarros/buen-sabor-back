@@ -1,9 +1,6 @@
 package com.example.buensaborback.domain.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 
@@ -20,9 +17,8 @@ public class DetallePedido extends Base{
     private Double subTotal;
 
     @ManyToOne
+    @JoinColumn(name = "articulo_id")
     private Articulo articulo;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+    
 }

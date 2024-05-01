@@ -1,6 +1,8 @@
 package com.example.buensaborback.domain.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.*;
 
 @NoArgsConstructor

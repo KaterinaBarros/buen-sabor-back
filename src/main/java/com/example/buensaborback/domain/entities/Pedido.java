@@ -6,6 +6,7 @@ import com.example.buensaborback.domain.entities.enums.TipoEnvio;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -29,15 +30,22 @@ public class Pedido extends Base{
     private LocalDate fechaPedido;
 
     @ManyToOne
+    @JoinColumn(name = "domicilio_id")
     private Domicilio domicilio;
 
     @ManyToOne
+    @JoinColumn(name = "sucursal_id", nullable = false)
     private Sucursal sucursal;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pedido")
     private Factura factura;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pedido_id")
     @Builder.Default
     private Set<DetallePedido> detallePedidos = new HashSet<>();
 }
